@@ -49,26 +49,9 @@ const Recipe = () => {
 
   const ingredients = extractIngredients(recipe)
 
-  const splitInstructions = (instructions) => {
-    if (!instructions) return [];
-
-    // Split by period followed by a space, or newlines
-    const steps = instructions.split(/(?:\|\n)\r\n/).filter(step => {
-      // Trim the step and check if it's not just a number
-      const trimmedStep = step.trim();
-      return trimmedStep !== '' && !/^\d+$/.test(trimmedStep);
-    });
-
-    return steps;
-  };
-
-  const methodSteps = recipe ? splitInstructions(recipe.strInstructions) : [];
-  console.log(methodSteps);
-
   return (
     <div className="mt-8 flex flex-col items-center">
       <Button onClick={fetchRecipe} disabled={isLoading}>
-        <Loader2 className={`mr-2 h-4 w-4 animate-spin ${isLoading ? '' : 'hidden'}`} />
         Cook Up Something New!
       </Button>
 
@@ -95,10 +78,10 @@ const Recipe = () => {
           </div>
 
 
-          <div className="flex w-full gap-8 mt-16">
-            <div className="flex-1 flex flex-col items-start">
+          <div className="flex md:flex-row flex-col w-full gap-8 mt-16">
+            <div className="flex-1 flex flex-col items-center md:items-start">
               <h3 className="font-semibold text-2xl text-primary relative">Ingredients
-                <div className="w-1/2 h-[1px] bg-primary mt-2"></div>
+                <div className="w-1/2 h-[1px] bg-primary mt-2 max-md:mx-auto"></div>
               </h3>
 
               <ul className="mt-2 flex flex-col gap-2">
@@ -121,7 +104,7 @@ const Recipe = () => {
               <div className="w-1/2 h-[1px] bg-primary mt-2 mx-auto"></div>
             </h3>
 
-            <p className="mt-4 whitespace-pre-line">
+            <p className="mt-8 mb-16 whitespace-pre-line">
               {recipe.strInstructions}
             </p>
           </div>
