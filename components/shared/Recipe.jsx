@@ -53,7 +53,7 @@ const Recipe = () => {
     if (!instructions) return [];
 
     // Split by period followed by a space, or newlines
-    const steps = instructions.split(/(?:\.\s|\n)/).filter(step => {
+    const steps = instructions.split(/(?:\|\n)\r\n/).filter(step => {
       // Trim the step and check if it's not just a number
       const trimmedStep = step.trim();
       return trimmedStep !== '' && !/^\d+$/.test(trimmedStep);
@@ -120,6 +120,10 @@ const Recipe = () => {
             <h3 className="font-semibold text-2xl text-primary text-center relative">Method
               <div className="w-1/2 h-[1px] bg-primary mt-2 mx-auto"></div>
             </h3>
+
+            <p className="mt-4 whitespace-pre-line">
+              {recipe.strInstructions}
+            </p>
           </div>
         </div>
       )}
