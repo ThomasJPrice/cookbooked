@@ -1,6 +1,6 @@
 'use client'
 
-import { Flag, HandPlatter, Loader2, ShoppingBasket } from "lucide-react"
+import { Flag, HandPlatter, Loader2, LogIn, ShoppingBasket } from "lucide-react"
 import { Button } from "../ui/button"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -33,6 +33,38 @@ const Recipe = () => {
     return ingredientCount;
   };
 
+  const extractIngredients = (recipe) => {
+    if (!recipe) return
+
+    let ingredients = [];
+    for (let i = 1; i <= 20; i++) {
+      const ingredient = recipe[`strIngredient${i}`];
+      const measure = recipe[`strMeasure${i}`];
+      if (ingredient && ingredient.trim() !== "") {
+        ingredients.push([measure ? measure.trim() : "", ingredient.trim()]);
+      }
+    }
+    return ingredients;
+  };
+
+  const ingredients = extractIngredients(recipe)
+
+  const splitInstructions = (instructions) => {
+    if (!instructions) return [];
+
+    // Split by period followed by a space, or newlines
+    const steps = instructions.split(/(?:\.\s|\n)/).filter(step => {
+      // Trim the step and check if it's not just a number
+      const trimmedStep = step.trim();
+      return trimmedStep !== '' && !/^\d+$/.test(trimmedStep);
+    });
+
+    return steps;
+  };
+
+  const methodSteps = recipe ? splitInstructions(recipe.strInstructions) : [];
+  console.log(methodSteps);
+
   return (
     <div className="mt-8 flex flex-col items-center">
       <Button onClick={fetchRecipe} disabled={isLoading}>
@@ -53,24 +85,41 @@ const Recipe = () => {
           </div>
 
           <div className="mt-4 flex gap-4">
-            <Button variant='outline'>
-              <Link href=''>View Original</Link>
-            </Button>
+            {recipe.strSource && <Button variant='outline'>
+              <Link href={recipe.strSource}>View Original</Link>
+            </Button>}
 
-            <Button variant='secondary'>
-              <Link href=''>YouTube Video</Link>
-            </Button>
+            {recipe.strYoutube && <Button variant='secondary'>
+              <Link href={recipe.strYoutube}>YouTube Video</Link>
+            </Button>}
           </div>
 
 
           <div className="flex w-full gap-8 mt-16">
-            <div className="flex-1">
-              <h3 className="font-semibold text-xl text-primary">Ingredients</h3>
+            <div className="flex-1 flex flex-col items-start">
+              <h3 className="font-semibold text-2xl text-primary relative">Ingredients
+                <div className="w-1/2 h-[1px] bg-primary mt-2"></div>
+              </h3>
+
+              <ul className="mt-2 flex flex-col gap-2">
+                {ingredients.map((item, index) => (
+                  <li key={item + index} className="w-full flex gap-1 items-center">
+                    <span className="text-lg text-primary font-medium">{item[0]}</span>
+                    <span>{item[1]}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             <div className="flex-1">
               <img src={recipe.strMealThumb} className="rounded-md" />
             </div>
+          </div>
+
+          <div className="mt-16">
+            <h3 className="font-semibold text-2xl text-primary text-center relative">Method
+              <div className="w-1/2 h-[1px] bg-primary mt-2 mx-auto"></div>
+            </h3>
           </div>
         </div>
       )}

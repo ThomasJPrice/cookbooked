@@ -11,7 +11,7 @@ const Navbar = () => {
       </Link>
 
       <Button>
-        <Link href='/'>GitHub</Link>
+        <Link href='https://github.com/ThomasJPrice/cookbooked'>GitHub</Link>
       </Button>
     </nav>
   )
