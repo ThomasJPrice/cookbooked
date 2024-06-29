@@ -10,6 +10,8 @@ const Recipe = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [recipe, setRecipe] = useState(null)
 
+  console.log(recipe);
+
   const fetchRecipe = async () => {
     setIsLoading(true)
     try {
