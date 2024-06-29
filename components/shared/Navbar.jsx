@@ -10,9 +10,15 @@ const Navbar = () => {
         <Image src={Logo} width={200} height={10} objectFit="contain" />
       </Link>
 
-      <Button>
-        <Link href='https://github.com/ThomasJPrice/cookbooked'>GitHub</Link>
-      </Button>
+      <div className="flex gap-2">
+        <Button variant='link'>
+          <Link href='/bookmarks'>My Bookmarks</Link>
+        </Button>
+
+        <Button>
+          <Link href='https://github.com/ThomasJPrice/cookbooked'>GitHub</Link>
+        </Button>
+      </div>
     </nav>
   )
 }

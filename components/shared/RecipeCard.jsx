@@ -1,35 +1,15 @@
-import { Flag, HandPlatter, Link, ShoppingBasket } from "lucide-react";
+import { Bookmark, Flag, HandPlatter, ShoppingBasket } from "lucide-react";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
-const RecipeCard = ({ recipe }) => {
-  const countIngredients = (recipe) => {
-    let ingredientCount = 0;
-    for (let i = 1; i <= 20; i++) {
-      if (recipe[`strIngredient${i}`]) {
-        ingredientCount++;
-      }
-    }
-    return ingredientCount;
-  };
+import { countIngredients, extractIngredients } from "@/lib/utils";
+import BookmarkButton from "./BookmarkButton";
 
-  const extractIngredients = (recipe) => {
-    if (!recipe) return
-
-    let ingredients = [];
-    for (let i = 1; i <= 20; i++) {
-      const ingredient = recipe[`strIngredient${i}`];
-      const measure = recipe[`strMeasure${i}`];
-      if (ingredient && ingredient.trim() !== "") {
-        ingredients.push([measure ? measure.trim() : "", ingredient.trim()]);
-      }
-    }
-    return ingredients;
-  };
-
+const RecipeCard = ({ recipe, border }) => {
   const ingredients = extractIngredients(recipe)
 
   return (
-    <div className="border-t border-border mt-16 w-full flex flex-col items-center">
+    <div className={`${border && 'border-t border-border mt-16'} w-full flex flex-col items-center`}>
       <h2 className="mt-8 text-2xl font-semibold text-primary">{recipe.strMeal}</h2>
 
       <div className="mt-4 flex gap-4">
@@ -48,6 +28,8 @@ const RecipeCard = ({ recipe }) => {
         {recipe.strYoutube && <Button variant='secondary'>
           <Link href={recipe.strYoutube}>YouTube Video</Link>
         </Button>}
+
+        <BookmarkButton id={recipe.idMeal} />
       </div>
 
 
